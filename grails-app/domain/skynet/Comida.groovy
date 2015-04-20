@@ -22,6 +22,11 @@ public class Comida {
      */
     private String tipo;
 
+    /**
+     * Tipo de comercio.
+     */
+    private Comercio comercio;
+
     /*
      * Metodo getter de nombre
      */
@@ -46,7 +51,7 @@ public class Comida {
     /*
      * Metodo getter de comercio
      */
-    public int getComercio() {
+    public Comercio getComercio() {
         return this.comercio;
     }
 
@@ -89,13 +94,10 @@ public class Comida {
     public static constraints = {
         nombre size: 1..100, blank: false;
         tipo size: 1..200;
-        precio blank: false;
     }
 
     /*
-     * Restricciones del sistema en la base
-     * de datos, closure de groovy.
+     * Relacion 1 a 1 con comida
      */
-    //se omite la siguiente linea para llenar la base de datos
-    //static belongsTo = [comercio:Comercio];
+    static belongsTo = Comercio;
 }

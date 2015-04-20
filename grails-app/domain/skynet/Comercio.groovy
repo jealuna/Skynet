@@ -214,7 +214,7 @@ public class Comercio {
      * @param comida
      */
     public void setRecomendada(Comida recomendada) {
-        this.comedor = comedor;
+        this.recomendada = recomendada;
     }
 
     /*
@@ -263,7 +263,8 @@ public class Comercio {
         direccion size: 1..300;
         bano blank: false;
         comedor blank: false;
-        direccion size: 1..500, blank: false;
+        foto nullable: true;
+        recomendada nullable: true;
     }
 
     /**

@@ -8,19 +8,19 @@
                 <div id="des">
                     <p>Busqueda Avanzada <br/> resultados:</p>
 		</div>
-                <g:render template="comercios" collection="${comercios}" />
+                <g:render template="comercios" />
             </g:if>
             <g:else>
                 <div id="des">
                     <p>Busqueda Avanzada</p>
 		</div>
                 <div id="board">
-                    <g:form  controller="comercio" action="busquedaAvanzada">
+                    <g:form  controller="comercio" action="busquedaAvanzada" params="[busqueda:true]">
                         <br/>
 			<p>Buscar por: </p>
 			<hr/>
 			<table id="main_table">
-                            <tr><td class="table_inf">Nombre: </td><td class="table_inf_input"><input type="text" name="name" maxlength="100" placeholder="Nombre del local" value="" id="nombre" /></td></tr>
+                            <tr><td class="table_inf">Nombre: </td><td class="table_inf_input"><input type="text" name="nombre" maxlength="100" placeholder="Nombre del local" value="" id="nombre" /></td></tr>
                             <tr><td class="table_inf">Tipo de comida: </td><td class="table_inf_input"><input type="text" name="tipo" maxlength="100" placeholder="Tipo de comida" value="" id="tipo" /></td></tr>
                             <tr><td class="table_inf">Transporte cercano: </td><td class="table_inf_input"><input type="text" name="estacion" maxlength="100" placeholder="Estacion" value="" id="estacion" /></td></tr>
                             <tr><td class="table_inf">Recomendada </td><td class="table_inf_input"><input type="text" name="recomendada" maxlength="100" placeholder="Especialidad" value="" id="recomendada" /></td></tr>

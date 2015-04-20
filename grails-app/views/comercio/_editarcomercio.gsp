@@ -1,7 +1,7 @@
 <br/>
 <!--<img src="${createLink(action:'imagen', controller:'comercio', params: [id:comercio?.id], absolute:"true")}" alt="${comercio?.nombre}" height="50" width="50">-->
-<table class="main_table">
-    <g:form name="editar_comercio" controller="comercio" action="registrar" params="[nuevo:true]">
+<g:form name="editar_comercio" controller="comercio" action="registrar" params="[nuevo:true]">
+    <table class="main_table">
         <tr><td class="table_inf" colspan="2">Nombre: </td><td class="table_inf_input"><input type="text" name="nombre" maxlength="100" placeholder="Nombre" value="${comercio?.nombre}"/></td></tr>
         <tr><td class="table_inf" colspan="3">Recomendada: </td></tr>
         <tr><td class="table_inf"></td><td class="table_inf">Comida</td><td class="table_inf_input"><input type="text" name="recomendada" maxlength="50" placeholder="recomendada" value="${comercio?.recomendada?.nombre}"/></td></tr>
@@ -16,8 +16,9 @@
         <tr><td class="table_inf" colspan="2">Pagina web: </td><td class="table_inf_input"><input type="text" name="pagina" maxlength="100" placeholder="pagina" value="${comercio?.pagina}"/></td></tr>
         <tr><td class="table_inf" colspan="3">Ubicacion: </td></tr>
         <tr><td colspan="3"><div id="map" style="width:500px;height:400px"></div></td></tr>
-    </g:form>
-</table>
+    </table>
+</g:form>
+
 <script type="text/javascript">
     <g:if test="${comercio?.latitud && comercio?.longitud}">
         obtenerMapa(${comercio?.latitud},${comercio?.longitud});

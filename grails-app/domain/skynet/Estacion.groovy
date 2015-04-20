@@ -60,5 +60,5 @@ public class Estacion {
      * Restricciones del sistema en la base
      * de datos, closure de groovy.
      */
-    //static belongsTo = Transporte;
+    static belongsTo = Transporte;
 }

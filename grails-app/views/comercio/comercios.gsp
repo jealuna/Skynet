@@ -6,6 +6,6 @@
             <div id="des">
                 <p>Lista de comercios</p>
             </div>
-            <g:render template="comercios" collection="${comercios}" />
+            <g:render template="comercios" />
 	</body>
 </html>

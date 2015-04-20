@@ -1,12 +1,16 @@
 package skynet;
 
+import static org.springframework.http.HttpStatus.*;
+import grails.transaction.Transactional;
+
 class ComercioController {
 
+    @Transactional
     public Object index(int max) {
-        params.max = max ?: 10;
+        params.max = max ?: 5;
         params.offset =  params.offset ?: 0;
-        Object listaComercios =  Comercio.executeQuery("""FROM Comercio comercio ORDER BY
-                                                          comercio.calificacion DESC""");
+        Object listaComercios =  Comercio.executeQuery("From Comercio as comercio ORDER BY comercio.calificacion DESC",
+                                                        [max:params.max, offset:params.offset]);
         Object totalComercios = Comercio.count();
         return sesionIniciada((LinkedHashMap)[comercios:listaComercios, total:totalComercios]);
     }
@@ -16,9 +20,9 @@ class ComercioController {
             render view: '/error', model: [status:405, exception: "Permiso denegado"];
             return;
         }
-        params.max = max ?: 10;
-        params.offset =  params.offset ?: 0;
-        Object listaComercios =  Comercio.list(max:params.max, offset:params.offset);
+        params.max = max ?: 5;
+        params.offset = params.offset ?: 0;
+        Object listaComercios =  Comercio.list(params);
         Object totalComercios = Comercio.count();
         return sesionIniciada((LinkedHashMap)[comercios:listaComercios, total:totalComercios]);
     }
@@ -31,25 +35,25 @@ class ComercioController {
         return sesionIniciada([:]);
     }
 
+    @Transactional
     public Object registrar(){
         if(!session.usuario || !(session.usuario instanceof Administrador)) {
             render view: '/error', model: [status:405, exception: "Permiso denegado"];
             return;
         }
-        Comercio comercio = new Comercio(nombre: params.nombre,
-                                         direccion: params.direccion,
-                                         pagina: params.pagina,
-                                         menorPrecio: params.menorPrecio,
-                                         mayorPrecio: params.mayorPrecio,
-                                         latitud: params.latitud,
-                                         longitud: params.longitud,
-                                         comedor: params.comedor,
-                                         bano: params.bano,
-                                         recomendada: new Comida (nombre: params.recomendada,
-                                                                  tipo: params.recomendadaTipo));
-        comercio.save(flush:true);
-        response.setContentType("application/json")
-	render '{"success":true,"message":"El usuario se ha modificado satisfactoriamente"}'
+        Comida nueva = new Comida(nombre:params.recomendada, tipo:params.recomendadaTipo, precio:100);
+        Comercio comercio = new Comercio(nombre:params.nombre, recomendada:nueva, direccion:params.direccion, bano:params.bano, comedor:params.comedor, pagina:params.pagina, longitud:params.longitud, latitud:params.latitud, mayorPrecio:params.mayorPrecio, menorPrecio:params.menorPrecio);
+        if (!comercio.save(flush:true)) {
+            StringBuilder sb = new StringBuilder();
+            comercio.errors.each {
+            }
+            response.setContentType("application/json")
+            render '{"error":true,"message":"error al guardar"}'
+            return
+	}
+        response.setContentType("application/json");
+	render '{"success":true,"message":"El usuario se ha modificado satisfactoriamente"}';
+        return;
     }
  
     public Object buscar() {
@@ -58,46 +62,45 @@ class ComercioController {
     }
 
     public Object busquedaAvanzada() {
-        if(params && params.buscar) {
+        if(params && params.busqueda) {
             Object resultado = [];
             if(params.nombre) {
-                resultado += Comercio.findByNombreLike("%${params.buscar}%");
+                resultado += Comercio.findByNombreLike("%${params.nombre}%");
             }
             if(params.recomendada) {
                 resultado += Comercio.executeQuery("""FROM Comercio as comercio WHERE
-                                                      comercio.recomendada.nombre LIKE=%?%""",
-                                                      [params.recomendada]);
+                                                        comercio.recomendada.nombre LIKE=%?%""",
+                                                        [params.recomendada]);
             }
             if(params.menorprecio && params.mayorprecio) {
                 resultado += Comercio.executeQuery("""FROM Comercio as comercio WHERE
-                                                      comercio.menorPrecio < ? AND 
-                                                      comercio.mayorPrecio > ?""",
-                                                      [params.menorprecio, params.mayorprecio]);
+                                                        comercio.menorPrecio < ? AND
+                                                        comercio.mayorPrecio > ?""",
+                                                        [params.menorprecio, params.mayorprecio]);
             }
             if(params.estacion) {
                 resultado += Comercio.executeQuery("""FROM Comercio as comercio WHERE
-                                                      comercio.estaciones.nombre LIKE=%?%""",
-                                                      [params.estacion]);
+                                                        comercio.estaciones.nombre LIKE=%?%""",
+                                                        [params.estacion]);
             }
             if(params.latitud && params.longitud) {
                 resultado += Comercio.executeQuery("""FROM Comercio as comercio WHERE
-                                                      SQRT(POWER(comercio.latitud-?,2)\n\
-                                                     + POWER(comercio.longitud-?,2)) < 0.01 """,
-                                                      [params.latitud, params.longitud]);
+                                                        SQRT(POWER(comercio.latitud-?,2)\n\
+                                                        + POWER(comercio.longitud-?,2)) < 0.01 """,
+                                                        [params.latitud, params.longitud]);
             }
             if(params.comida) {
                 resultado += Comercio.executeQuery("""FROM Comercio as comercio WHERE
-                                                      comercio.comidas.nombre LIKE=%?%""",
-                                                      [params.comida]);
+                                                        comercio.comidas.nombre LIKE=%?%""",
+                                                        [params.comida]);
             }
             if(params.tipo) {
                 resultado += Comercio.executeQuery("""FROM Comercio as comercio WHERE
-                                                      comercio.comidas.tipo LIKE=%?%""",
-                                                      [params.tipo]);
+                                                        comercio.comidas.tipo LIKE=%?%""",
+                                                        [params.tipo]);
             }
             return sesionIniciada((LinkedHashMap)[comercios:resultado, busqueda:true]);
         }
-        return resultado;
     }
 
     public Object comercio() {

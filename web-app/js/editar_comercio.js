@@ -90,8 +90,8 @@ function registrar(form) {
     formData.append('mayorPrecio', form.mayorPrecio.value);
     formData.append('latitud', comercioLatitud);
     formData.append('longitud', comercioLongitud);
-    formData.append('direccion', form.direccion);
-    formData.append('pagina', form.pagina);
+    formData.append('direccion', form.direccion.value);
+    formData.append('pagina', form.pagina.value);
     formData.append('bano', form.bano.checked);
     formData.append('comedor', form.comedor.checked);
     var comida = document.getElementById("comida_comercio");

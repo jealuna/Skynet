@@ -5,7 +5,7 @@
         </head>
     <body >
     	<div>
-    		<h1 class="not-found" >404<p/>
+    		<h1 class="not-found" >404
     		NYAN FOUND!</h1>
     	</div>
     	<audio id="player_intro" src="${createLinkTo(dir:'sounds',file:'nyan-cat-intro.ogg')}" type="audio/ogg" ></audio>
