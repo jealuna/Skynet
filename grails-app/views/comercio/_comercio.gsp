@@ -26,9 +26,9 @@
             <g:form id="calificar" controller="comercio" action="calificar" params="[id:'${comida?.id}', usuario:'${usuario?.id}']">
                 <tr><td class="table_inf">Calificacion: </td><td class="table_inf_input"><g:each in="[1,2,3,4,5]" var="i"> <g:if test="${i <= comercio?.calificacion}"><div class="rating_star_on"><div id="rating_start_${i}" onclick="calificar(this, ${i})"></div></div></g:if><g:else><div class="rating_star_off"><div id="rating_start_${i}" onclick="calificar(this, ${i})"></div></div></g:else></g:each></td></tr>
             </g:form>
-            <tr><td class="wannabie_inf" colspan="2">Agregar Comentario:</td></tr>
+            <tr><td class="table_inf">Agregar Comentario:</td></tr>
             <g:form id="comentar" controller="comercio" action="comentar" params="[id:'${comida?.id}', usuario:'${usuario?.id}']">
-                <tr><td colspan="2"><textarea class="ckeditor" id="agregar_comentario" rows="4" cols="50" form="comentar"></textarea></td></tr>
+                <table width = "500" height = "400" ><tr><td colspan="3"><textarea class="ckeditor" id="agregar_comentario" rows="4" cols="50" form="comentar"></textarea></td></tr>
                 <tr><td></td><td colspan="2"><input type="submit" name="new_wannabie" value="Comentar" id="new_wannabie" /></td></tr>
             </g:form>
         </g:if>
