@@ -48,8 +48,9 @@
     <div id="comparte">
         <p> Compartir </p>
         <ul>
-            <li><div class="facebook" onclick="goTo('${createLink(action:'facebook', controller:'comercio', absolute="true")}')">facebook</div></li>
-            <li><div class="twitter" onclick="goTo('${createLink(action:'twitter', controller:'comercio', absolute="true")}')">twitter</div></li>
+            <script type="text/javascript" src="${createLinkTo(dir:'js',file:'share.js')}" ></script>
+            <li><div class="facebook" onclick="shareOnFacebook()">facebook</div></li>
+            <li><div class="twitter" onclick="shareOnTwitter()">twitter</div></li>
         </ul>
     </div>
     <br/>
